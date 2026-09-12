@@ -24,10 +24,9 @@ Next.js 16, React 19, TypeScript, PostgreSQL, Prisma, Tailwind CSS e Zod.
 
 1. Copie `.env.example` para `.env` e ajuste os valores.
 2. Instale as dependências com `npm install`.
-3. Gere o cliente Prisma com `npx prisma generate`.
-4. Aplique as migrações com `npx prisma migrate deploy`.
-5. Crie o usuário inicial com `npx prisma db seed`.
-6. Inicie o projeto com `npm run dev` e acesse `http://localhost:3000`.
+3. Aplique as migrações com `npm run db:deploy`.
+4. Defina as variáveis `SEED_ADMIN_*` e crie o usuário inicial com `npm run db:seed`.
+5. Inicie o projeto com `npm run dev` e acesse `http://localhost:3000`.
 
 Não use as credenciais de exemplo em ambientes publicados.
 
@@ -49,3 +48,4 @@ npm run build
 - `tests/`: testes automatizados das regras críticas.
 
 O plano de evolução e os riscos conhecidos estão em `docs/ROADMAP.md`.
+O passo a passo para publicar o sistema está em `docs/PUBLICACAO.md`.

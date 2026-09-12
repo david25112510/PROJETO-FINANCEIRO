@@ -29,9 +29,6 @@ jobs:
       - name: Instalar dependências
         run: npm ci
 
-      - name: Gerar cliente Prisma
-        run: npx prisma generate
-
       - name: Analisar código
         run: npm run lint
 

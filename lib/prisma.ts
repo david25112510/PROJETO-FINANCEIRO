@@ -5,7 +5,13 @@ declare global {
   var __prisma: PrismaClient | undefined;
 }
 
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+const databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  throw new Error("DATABASE_URL não foi configurada.");
+}
+
+const adapter = new PrismaPg({ connectionString: databaseUrl });
 
 export const prisma =
   global.__prisma ??
