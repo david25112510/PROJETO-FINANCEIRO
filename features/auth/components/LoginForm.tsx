@@ -6,13 +6,14 @@ import { FormField } from "@/components/ui/FormField";
 import { Button } from "@/components/ui/Button";
 import type { ApiResponse } from "@/lib/api-response";
 import type { SafeUser } from "@/services/auth/authService";
+import { normalizarDestinoInterno } from "@/lib/internalRedirect";
 
 type RespostaLogin = { requerTotp: true; loginPendenteId: string } | { requerTotp: false; user: SafeUser };
 
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirecionarPara = searchParams.get("redirecionarPara") ?? "/dashboard";
+  const redirecionarPara = normalizarDestinoInterno(searchParams.get("redirecionarPara"));
 
   const [etapa, setEtapa] = useState<"credenciais" | "totp">("credenciais");
   const [email, setEmail] = useState("");

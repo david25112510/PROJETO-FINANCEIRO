@@ -1,0 +1,42 @@
+name: Validar projeto
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      DATABASE_URL: postgresql://financeops:financeops@localhost:5432/financeops
+      SESSION_SECRET: ci-session-secret-with-at-least-32-characters
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Gerar cliente Prisma
+        run: npx prisma generate
+
+      - name: Analisar código
+        run: npm run lint
+
+      - name: Executar testes
+        run: npm test
+
+      - name: Compilar produção
+        run: npm run build

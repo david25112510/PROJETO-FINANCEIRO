@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FinanceOps
 
-## Getting Started
+Aplicação web de gestão financeira pessoal com receitas, despesas, cartões,
+faturas, dívidas, financiamentos, metas, relatórios, importação de extratos e
+indicadores de saúde financeira.
 
-First, run the development server:
+## Recursos atuais
+
+- autenticação com sessões, bloqueio por tentativas e 2FA por TOTP;
+- receitas e despesas simples, recorrentes ou parceladas;
+- cartões, compras parceladas, ciclos de fatura e pagamentos;
+- dívidas, simulação de quitação e financiamentos Price/SAC;
+- metas financeiras e sugestão de aporte;
+- relatórios por período com exportação em PDF e Excel;
+- importação de arquivos OFX e CSV com detecção de duplicidade;
+- PWA responsivo com shell público para indisponibilidade de rede;
+- base preparada para Open Finance e WhatsApp, ainda sem provedor real.
+
+## Tecnologias
+
+Next.js 16, React 19, TypeScript, PostgreSQL, Prisma, Tailwind CSS e Zod.
+
+## Configuração local
+
+1. Copie `.env.example` para `.env` e ajuste os valores.
+2. Instale as dependências com `npm install`.
+3. Gere o cliente Prisma com `npx prisma generate`.
+4. Aplique as migrações com `npx prisma migrate deploy`.
+5. Crie o usuário inicial com `npx prisma db seed`.
+6. Inicie o projeto com `npm run dev` e acesse `http://localhost:3000`.
+
+Não use as credenciais de exemplo em ambientes publicados.
+
+## Verificações
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
+npm test
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Arquitetura
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `app/`: páginas e rotas HTTP;
+- `features/`: interfaces e comunicação dos módulos no navegador;
+- `services/`: regras de negócio;
+- `repositories/`: acesso ao banco;
+- `prisma/`: esquema e migrações;
+- `tests/`: testes automatizados das regras críticas.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+O plano de evolução e os riscos conhecidos estão em `docs/ROADMAP.md`.

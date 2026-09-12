@@ -1,5 +1,5 @@
-const CACHE_NAME = "financeops-v1";
-const APP_SHELL = ["/login", "/manifest.webmanifest", "/icons/icon-192.png", "/icons/icon-512.png"];
+const CACHE_NAME = "financeops-v2";
+const APP_SHELL = ["/offline.html", "/manifest.webmanifest", "/icons/icon-192.png", "/icons/icon-512.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -45,14 +45,10 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Navegação/páginas: network-first, com fallback de cache para uso offline básico.
+  // Páginas autenticadas podem conter dados pessoais e nunca devem ir para o
+  // Cache Storage. Em caso de falha de rede, mostramos apenas o shell público.
   event.respondWith(
     fetch(request)
-      .then((response) => {
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
-        return response;
-      })
-      .catch(() => caches.match(request).then((cached) => cached || caches.match("/login"))),
+      .catch(() => caches.match("/offline.html")),
   );
 });

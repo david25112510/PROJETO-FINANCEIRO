@@ -1,12 +1,17 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { LoginForm } from "@/features/auth/components/LoginForm";
+import { getCurrentUser } from "@/lib/session";
 
 export const metadata: Metadata = {
   title: "Entrar - FinanceOps",
 };
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const user = await getCurrentUser();
+  if (user) redirect("/dashboard");
+
   return (
     <div className="grid min-h-screen bg-background lg:grid-cols-[1.05fr_0.95fr]">
       <section className="hidden flex-col justify-between bg-ink p-10 text-white lg:flex">

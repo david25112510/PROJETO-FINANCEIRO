@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#16294f" />
+    <title>FinanceOps offline</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background: #f4f6f9;
+        color: #101828;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      main {
+        width: min(100%, 420px);
+        padding: 32px;
+        border: 1px solid #dbdfe4;
+        border-radius: 16px;
+        background: #fff;
+        box-shadow: 0 12px 32px rgb(16 24 40 / 8%);
+      }
+      .marca { color: #159a9c; font-weight: 700; }
+      h1 { margin: 12px 0 8px; font-size: 24px; }
+      p { margin: 0; color: #626c78; line-height: 1.6; }
+      button {
+        width: 100%;
+        margin-top: 24px;
+        padding: 12px 16px;
+        border: 0;
+        border-radius: 10px;
+        background: #16294f;
+        color: #fff;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="marca">FinanceOps</div>
+      <h1>Você está sem conexão</h1>
+      <p>Reconecte-se para acessar seus dados financeiros com segurança.</p>
+      <button type="button" onclick="location.reload()">Tentar novamente</button>
+    </main>
+  </body>
+</html>
