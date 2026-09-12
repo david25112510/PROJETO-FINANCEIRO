@@ -24,6 +24,10 @@ produção:
 - `SESSION_SECRET`, com pelo menos 32 caracteres aleatórios;
 - `LOG_LEVEL=info`.
 
+Marque `DATABASE_URL`, `DIRECT_URL` e `SESSION_SECRET` como variáveis sensíveis.
+Não configure `NODE_ENV`: a Vercel define essa variável para o ambiente de
+produção. A branch de produção do projeto deve ser `master`.
+
 As variáveis `SEED_ADMIN_NAME`, `SEED_ADMIN_EMAIL` e `SEED_ADMIN_PASSWORD` são
 necessárias somente enquanto o primeiro usuário é criado. Depois, podem ser
 removidas da Vercel.
@@ -57,7 +61,31 @@ Depois da publicação, confirme:
 
 ## 5. Cópias de segurança
 
-Ative a retenção de histórico oferecida pelo plano do Neon. Antes de mudanças
-grandes no banco, crie uma ramificação ou restaure uma cópia em um banco de
-teste. Exporte periodicamente os relatórios financeiros em PDF ou Excel como
-cópia adicional dos dados mais importantes.
+O Neon mantém histórico para restauração instantânea. No plano gratuito, a
+janela disponível é de até 6 horas ou 1 GB de alterações, o que ocorrer
+primeiro. Planos pagos podem oferecer uma janela maior, mas nenhum upgrade deve
+ser feito sem decisão explícita do proprietário.
+
+Procedimento de recuperação:
+
+1. abra o projeto no Neon e acesse **Backup & Restore**;
+2. use a consulta temporal para localizar o instante anterior ao problema;
+3. restaure primeiro para uma branch separada sempre que a interface oferecer
+   essa opção;
+4. confira os dados recuperados antes de promover ou copiar qualquer conteúdo;
+5. nunca redefina a branch principal sem uma revisão específica do impacto.
+
+Antes de mudanças grandes no banco, crie uma branch temporária de recuperação.
+Exporte periodicamente os relatórios financeiros em PDF ou Excel como cópia
+adicional dos dados mais importantes.
+
+## 6. Atualizações contínuas
+
+Depois que o repositório estiver conectado à Vercel, cada push para `master`
+deve criar um deployment de produção. O GitHub Actions valida lint, testes e
+build, enquanto a Vercel executa `vercel-build`, aplica migrations pendentes e
+publica a nova versão.
+
+Variáveis do banco de produção não devem ser reutilizadas em deployments de
+preview. Se previews forem habilitados no futuro, use uma branch separada do
+Neon para evitar que uma migration de teste altere o banco real.

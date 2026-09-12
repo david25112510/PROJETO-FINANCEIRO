@@ -49,3 +49,13 @@ npm run build
 
 O plano de evolução e os riscos conhecidos estão em `docs/ROADMAP.md`.
 O passo a passo para publicar o sistema está em `docs/PUBLICACAO.md`.
+
+## Produção
+
+- aplicação: Vercel;
+- banco: PostgreSQL no Neon;
+- código e CI: GitHub, branch `master`;
+- verificação de disponibilidade: `GET /api/health`.
+
+Os valores de conexão e autenticação são configurados somente nos ambientes
+protegidos. O repositório contém apenas os nomes das variáveis necessárias.
