@@ -1,0 +1,471 @@
+// FinanceOps — schema Prisma
+// Épico 1 (Fundação): autenticação, usuários e preferências.
+// Épicos 2+3 (Dashboard + Receitas/Despesas): categorias e lançamentos financeiros.
+// Épico 4 (Cartões): cartão, fatura (ciclo de fechamento/vencimento) e compras.
+// Épico 5 (Dívidas e financiamentos): dívida (quitação antecipada) e
+// financiamento (amortização Price/SAC).
+// Épico 6 (Metas financeiras): meta com aportes e sugestão de aporte mensal.
+// Épico 9 (Importação e Open Finance): histórico de importação OFX/CSV e
+// consentimento Open Finance (integração real isolada em serviço próprio;
+// nenhum provedor bancário é simulado).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Theme {
+  LIGHT
+  DARK
+  SYSTEM
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  avatarUrl    String?
+  theme        Theme     @default(SYSTEM)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Proteção contra força bruta
+  falhasLoginConsecutivas Int       @default(0)
+  bloqueadoAte            DateTime?
+
+  // Autenticação em dois fatores (TOTP)
+  totpSecret    String?
+  totpAtivado   Boolean  @default(false)
+  codigosBackup String[] @default([])
+
+  sessions                 Session[]
+  layoutPreferences        LayoutPreference[]
+  auditLogs                AuditLog[]
+  categorias               Categoria[]
+  receitas                 Receita[]
+  despesas                 Despesa[]
+  cartoes                  Cartao[]
+  compras                  Compra[]
+  dividas                  Divida[]
+  financiamentos           Financiamento[]
+  metas                    Meta[]
+  importacoes              ImportacaoArquivo[]
+  consentimentoOpenFinance ConsentimentoOpenFinance?
+  loginsPendentes          LoginPendente[]
+  telefoneWhatsapp         TelefoneWhatsapp?
+  mensagensWhatsapp        MensagemWhatsapp[]
+
+  @@map("users")
+}
+
+/// Estado intermediário de login quando o usuário tem 2FA ativado: a senha já
+/// foi validada, mas a sessão só é criada após o código TOTP ser confirmado.
+/// Expira em poucos minutos e é de uso único.
+model LoginPendente {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ipAddress String?
+  userAgent String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("logins_pendentes")
+}
+
+model Session {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  userAgent String?
+  ipAddress String?
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+/// Preferências de layout do dashboard (posição/tamanho de widgets), por usuário.
+model LayoutPreference {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  widgetKey String
+  position  Int
+  width     Int
+  height    Int
+  visible   Boolean  @default(true)
+  config    Json?
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, widgetKey])
+  @@map("layout_preferences")
+}
+
+/// Log de auditoria — obrigatório em toda operação de escrita, em todos os domínios futuros.
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  entity    String
+  entityId  String?
+  metadata  Json?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([entity, entityId])
+  @@map("audit_logs")
+}
+
+enum TipoCategoria {
+  RECEITA
+  DESPESA
+}
+
+enum FrequenciaRecorrencia {
+  SEMANAL
+  MENSAL
+  BIMESTRAL
+  TRIMESTRAL
+  SEMESTRAL
+  ANUAL
+}
+
+model Categoria {
+  id        String        @id @default(cuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  nome      String
+  tipo      TipoCategoria
+  cor       String        @default("#626c78")
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  receitas Receita[]
+  despesas Despesa[]
+  compras  Compra[]
+  metas    Meta[]
+
+  @@unique([userId, tipo, nome])
+  @@index([userId])
+  @@map("categorias")
+}
+
+/// Lançamento de receita. Quando recorrente, cada ocorrência é uma linha própria
+/// compartilhando `grupoRecorrenciaId`; quando parcelado, cada parcela compartilha
+/// `grupoParcelamentoId`. Um lançamento não é, ao mesmo tempo, recorrente e parcelado.
+model Receita {
+  id                    String                 @id @default(cuid())
+  userId                String
+  user                  User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoriaId           String?
+  categoria             Categoria?             @relation(fields: [categoriaId], references: [id], onDelete: SetNull)
+  descricao             String
+  valor                 Decimal                @db.Decimal(12, 2)
+  data                  DateTime               @db.Date
+  recorrente            Boolean                @default(false)
+  frequenciaRecorrencia FrequenciaRecorrencia?
+  grupoRecorrenciaId    String?
+  parcelaAtual          Int?
+  totalParcelas         Int?
+  grupoParcelamentoId   String?
+  observacoes           String?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+
+  @@index([userId, data])
+  @@index([grupoRecorrenciaId])
+  @@index([grupoParcelamentoId])
+  @@map("receitas")
+}
+
+/// Lançamento de despesa. Mesma estrutura de recorrência/parcelamento da Receita.
+model Despesa {
+  id                    String                 @id @default(cuid())
+  userId                String
+  user                  User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoriaId           String?
+  categoria             Categoria?             @relation(fields: [categoriaId], references: [id], onDelete: SetNull)
+  descricao             String
+  valor                 Decimal                @db.Decimal(12, 2)
+  data                  DateTime               @db.Date
+  recorrente            Boolean                @default(false)
+  frequenciaRecorrencia FrequenciaRecorrencia?
+  grupoRecorrenciaId    String?
+  parcelaAtual          Int?
+  totalParcelas         Int?
+  grupoParcelamentoId   String?
+  observacoes           String?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+
+  @@index([userId, data])
+  @@index([grupoRecorrenciaId])
+  @@index([grupoParcelamentoId])
+  @@map("despesas")
+}
+
+enum StatusFatura {
+  ABERTA
+  FECHADA
+  PAGA_PARCIAL
+  PAGA
+}
+
+model Cartao {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  nome          String
+  bandeira      String?
+  limite        Decimal  @db.Decimal(12, 2)
+  diaFechamento Int
+  diaVencimento Int
+  cor           String   @default("#2c4a86")
+  ativo         Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  faturas Fatura[]
+  compras Compra[]
+
+  @@index([userId])
+  @@map("cartoes")
+}
+
+/// Uma fatura representa o ciclo de cobrança de um cartão em um mês/ano de
+/// referência (o mês em que ela fecha). `valorTotal`/`valorPago` só são
+/// definitivos após o fechamento; enquanto ABERTA, o total é calculado ao
+/// vivo pela soma das compras vinculadas.
+model Fatura {
+  id             String       @id @default(cuid())
+  cartaoId       String
+  cartao         Cartao       @relation(fields: [cartaoId], references: [id], onDelete: Cascade)
+  mesReferencia  Int
+  anoReferencia  Int
+  dataFechamento DateTime     @db.Date
+  dataVencimento DateTime     @db.Date
+  status         StatusFatura @default(ABERTA)
+  valorTotal     Decimal      @default(0) @db.Decimal(12, 2)
+  valorPago      Decimal      @default(0) @db.Decimal(12, 2)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  compras Compra[]
+
+  @@unique([cartaoId, mesReferencia, anoReferencia])
+  @@index([cartaoId, status])
+  @@map("faturas")
+}
+
+/// Compra no cartão. Quando parcelada, cada parcela é uma linha própria
+/// (mesmo padrão de Receita/Despesa) e cada uma pode cair em uma fatura
+/// diferente, conforme sua própria data em relação ao ciclo de fechamento.
+model Compra {
+  id                  String     @id @default(cuid())
+  userId              String
+  user                User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cartaoId            String
+  cartao              Cartao     @relation(fields: [cartaoId], references: [id], onDelete: Cascade)
+  faturaId            String
+  fatura              Fatura     @relation(fields: [faturaId], references: [id], onDelete: Cascade)
+  categoriaId         String?
+  categoria           Categoria? @relation(fields: [categoriaId], references: [id], onDelete: SetNull)
+  descricao           String
+  valor               Decimal    @db.Decimal(12, 2)
+  data                DateTime   @db.Date
+  parcelaAtual        Int?
+  totalParcelas       Int?
+  grupoParcelamentoId String?
+  observacoes         String?
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+
+  @@index([userId])
+  @@index([cartaoId])
+  @@index([faturaId])
+  @@index([grupoParcelamentoId])
+  @@map("compras")
+}
+
+enum StatusDivida {
+  ATIVA
+  QUITADA
+}
+
+/// Dívida avulsa (empréstimo pessoal, parcelamento fora do cartão, etc.).
+/// `parcelasRestantes`/`valorParcela` são opcionais — quando informados,
+/// habilitam a simulação de quitação antecipada.
+model Divida {
+  id                String       @id @default(cuid())
+  userId            String
+  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  descricao         String
+  credor            String?
+  valorOriginal     Decimal      @db.Decimal(12, 2)
+  valorAtual        Decimal      @db.Decimal(12, 2)
+  taxaJurosMensal   Decimal      @db.Decimal(6, 4)
+  parcelasRestantes Int?
+  valorParcela      Decimal?     @db.Decimal(12, 2)
+  dataContratacao   DateTime     @db.Date
+  status            StatusDivida @default(ATIVA)
+  dataQuitacao      DateTime?    @db.Date
+  observacoes       String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  @@index([userId])
+  @@map("dividas")
+}
+
+enum SistemaAmortizacao {
+  PRICE
+  SAC
+}
+
+enum StatusFinanciamento {
+  ATIVO
+  QUITADO
+}
+
+/// Financiamento de longo prazo (imóvel, veículo) com tabela de amortização
+/// calculada sob demanda (Price ou SAC) — não persistida parcela a parcela.
+model Financiamento {
+  id                 String              @id @default(cuid())
+  userId             String
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  descricao          String
+  valorTotal         Decimal             @db.Decimal(12, 2)
+  taxaJurosMensal    Decimal             @db.Decimal(6, 4)
+  numeroParcelas     Int
+  sistemaAmortizacao SistemaAmortizacao
+  dataContratacao    DateTime            @db.Date
+  status             StatusFinanciamento @default(ATIVO)
+  observacoes        String?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  @@index([userId])
+  @@map("financiamentos")
+}
+
+enum StatusMeta {
+  EM_ANDAMENTO
+  CONCLUIDA
+}
+
+/// Meta financeira com progresso acumulado manualmente via aportes
+/// (mesmo padrão de ação explícita usado em Fatura.pagar/Divida.quitar).
+model Meta {
+  id            String     @id @default(cuid())
+  userId        String
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  nome          String
+  descricao     String?
+  valorAlvo     Decimal    @db.Decimal(12, 2)
+  valorAtual    Decimal    @default(0) @db.Decimal(12, 2)
+  dataAlvo      DateTime   @db.Date
+  categoriaId   String?
+  categoria     Categoria? @relation(fields: [categoriaId], references: [id], onDelete: SetNull)
+  status        StatusMeta @default(EM_ANDAMENTO)
+  dataConclusao DateTime?  @db.Date
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@index([userId])
+  @@map("metas")
+}
+
+enum TipoArquivoImportacao {
+  OFX
+  CSV
+}
+
+/// Histórico de importações de extrato (OFX/CSV) — auditoria de quando e
+/// quantas transações foram lidas/importadas/ignoradas por duplicidade.
+model ImportacaoArquivo {
+  id              String                @id @default(cuid())
+  userId          String
+  user            User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  nomeArquivo     String
+  tipoArquivo     TipoArquivoImportacao
+  totalLidos      Int
+  totalImportados Int
+  totalDuplicados Int
+  totalErros      Int                   @default(0)
+  createdAt       DateTime              @default(now())
+
+  @@index([userId])
+  @@map("importacoes_arquivo")
+}
+
+/// Consentimento explícito do usuário para sincronização via Open Finance.
+/// Não armazena nenhum dado bancário — apenas o registro de consentimento.
+/// A sincronização em si é isolada em services/openfinance e depende de um
+/// provedor real configurado (nenhum provedor é simulado neste projeto).
+model ConsentimentoOpenFinance {
+  id           String    @id @default(cuid())
+  userId       String    @unique
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  consentido   Boolean   @default(false)
+  consentidoEm DateTime?
+  revogadoEm   DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@map("consentimentos_open_finance")
+}
+
+/// Vínculo entre um número de WhatsApp e a conta do usuário. A verificação
+/// (código enviado por WhatsApp) prova posse do número antes de aceitar
+/// comandos vindos dele.
+model TelefoneWhatsapp {
+  id                String    @id @default(cuid())
+  userId            String    @unique
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  numero            String    @unique
+  verificado        Boolean   @default(false)
+  codigoVerificacao String?
+  codigoExpiraEm    DateTime?
+  ativo             Boolean   @default(true)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@map("telefones_whatsapp")
+}
+
+enum DirecaoMensagemWhatsapp {
+  ENTRADA
+  SAIDA
+}
+
+/// Histórico de mensagens do chatbot — auditoria de comandos recebidos e
+/// respostas enviadas, e qual lançamento (se algum) cada mensagem gerou.
+model MensagemWhatsapp {
+  id                   String                  @id @default(cuid())
+  userId               String?
+  user                 User?                   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  numero               String
+  direcao              DirecaoMensagemWhatsapp
+  conteudo             String
+  intencao             String?
+  processadoComSucesso Boolean                 @default(false)
+  entidadeCriadaTipo   String?
+  entidadeCriadaId     String?
+  createdAt            DateTime                @default(now())
+
+  @@index([userId])
+  @@index([numero])
+  @@map("mensagens_whatsapp")
+}

@@ -1,26 +1,115 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Base */
+  --color-background: #f4f6f9;
+  --color-surface: #ffffff;
+  --color-foreground: #101828;
+  --color-panel: #fbfcfe;
+
+  /* Azul escuro — cor de marca / ações primárias */
+  --color-navy-50: #eef2fa;
+  --color-navy-100: #d7e0f2;
+  --color-navy-300: #7f95c4;
+  --color-navy-500: #2c4a86;
+  --color-navy-600: #1e3868;
+  --color-navy-700: #16294f;
+  --color-navy-800: #101d3a;
+  --color-navy-900: #0b1526;
+
+  /* Cinza grafite — texto, bordas, superfícies neutras */
+  --color-graphite-50: #f7f8f9;
+  --color-graphite-100: #eceef1;
+  --color-graphite-200: #dbdfe4;
+  --color-graphite-300: #b9c0c9;
+  --color-graphite-400: #8b95a1;
+  --color-graphite-500: #626c78;
+  --color-graphite-600: #4a525c;
+  --color-graphite-700: #363c45;
+  --color-graphite-800: #23272e;
+  --color-graphite-900: #16181d;
+
+  /* Status */
+  --color-success-50: #eafbf1;
+  --color-success-500: #17a95a;
+  --color-success-600: #128a48;
+
+  --color-warning-50: #fff8e6;
+  --color-warning-500: #d69b13;
+  --color-warning-600: #b17e0a;
+
+  --color-danger-50: #fdeeee;
+  --color-danger-500: #d13c3c;
+  --color-danger-600: #b02a2a;
+
+  --color-aqua-50: #eaf8f8;
+  --color-aqua-500: #159a9c;
+  --color-aqua-600: #0f7e81;
+  --color-ink: #10141f;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-sans: var(--font-inter);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-foreground: var(--color-foreground);
+  --color-panel: var(--color-panel);
+
+  --color-navy-50: var(--color-navy-50);
+  --color-navy-100: var(--color-navy-100);
+  --color-navy-300: var(--color-navy-300);
+  --color-navy-500: var(--color-navy-500);
+  --color-navy-600: var(--color-navy-600);
+  --color-navy-700: var(--color-navy-700);
+  --color-navy-800: var(--color-navy-800);
+  --color-navy-900: var(--color-navy-900);
+
+  --color-graphite-50: var(--color-graphite-50);
+  --color-graphite-100: var(--color-graphite-100);
+  --color-graphite-200: var(--color-graphite-200);
+  --color-graphite-300: var(--color-graphite-300);
+  --color-graphite-400: var(--color-graphite-400);
+  --color-graphite-500: var(--color-graphite-500);
+  --color-graphite-600: var(--color-graphite-600);
+  --color-graphite-700: var(--color-graphite-700);
+  --color-graphite-800: var(--color-graphite-800);
+  --color-graphite-900: var(--color-graphite-900);
+
+  --color-success-50: var(--color-success-50);
+  --color-success-500: var(--color-success-500);
+  --color-success-600: var(--color-success-600);
+
+  --color-warning-50: var(--color-warning-50);
+  --color-warning-500: var(--color-warning-500);
+  --color-warning-600: var(--color-warning-600);
+
+  --color-danger-50: var(--color-danger-50);
+  --color-danger-500: var(--color-danger-500);
+  --color-danger-600: var(--color-danger-600);
+
+  --color-aqua-50: var(--color-aqua-50);
+  --color-aqua-500: var(--color-aqua-500);
+  --color-aqua-600: var(--color-aqua-600);
+  --color-ink: var(--color-ink);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(21, 154, 156, 0.08), transparent 34rem),
+    linear-gradient(180deg, #f8fafc 0%, var(--color-background) 45%);
+  color: var(--color-foreground);
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+}
+
+/* Números em destaque — usados nos cards de indicador */
+.numero-destaque {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+/* Foco visível para navegação por teclado (acessibilidade AA) */
+:focus-visible {
+  outline: 2px solid var(--color-navy-500);
+  outline-offset: 2px;
 }
