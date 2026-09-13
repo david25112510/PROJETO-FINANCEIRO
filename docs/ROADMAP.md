@@ -20,6 +20,8 @@ WhatsApp expõem a experiência planejada, porém não têm provedores reais.
 - fim do ciclo de redirecionamento causado por cookie de sessão inválido;
 - validação de destino após login para impedir redirecionamento externo;
 - remoção de páginas autenticadas do cache do PWA e expiração do cache antigo;
+- liberação restrita do manifest, service worker, página offline e ícones para
+  permitir a instalação da PWA sem tornar dados financeiros públicos;
 - alinhamento das versões do Prisma e atualização da documentação de instalação.
 
 ## Prioridade 1 — preparar um beta seguro

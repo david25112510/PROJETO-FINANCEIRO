@@ -4,6 +4,14 @@ O FinanceOps foi preparado para ser publicado na Vercel com PostgreSQL no
 Neon. O cadastro público não existe: somente o usuário criado pelo comando de
 seed consegue entrar.
 
+## Ambiente de produção
+
+- URL: `https://projeto-financeiro-amber.vercel.app`;
+- Vercel: projeto `david25112510/projeto-financeiro`;
+- GitHub: `david25112510/PROJETO-FINANCEIRO`, branch `master`;
+- Neon: projeto `financeops`, branch `production`, região `aws-sa-east-1`;
+- banco: `neondb`.
+
 ## 1. Conexões do banco
 
 No painel do Neon, copie duas conexões do mesmo banco:
@@ -58,6 +66,10 @@ Depois da publicação, confirme:
 3. o usuário inicial consegue entrar;
 4. uma receita de teste pode ser criada e excluída;
 5. a autenticação em dois fatores está ativada na página de segurança.
+
+O manifest, o service worker, a página offline e os ícones precisam permanecer
+públicos para que a instalação PWA funcione antes e depois do login. O service
+worker não armazena respostas de API nem páginas autenticadas no Cache Storage.
 
 ## 5. Cópias de segurança
 

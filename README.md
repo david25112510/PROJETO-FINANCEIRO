@@ -52,7 +52,7 @@ O passo a passo para publicar o sistema está em `docs/PUBLICACAO.md`.
 
 ## Produção
 
-- aplicação: Vercel;
+- aplicação: Vercel — `https://projeto-financeiro-amber.vercel.app`;
 - banco: PostgreSQL no Neon;
 - código e CI: GitHub, branch `master`;
 - verificação de disponibilidade: `GET /api/health`.

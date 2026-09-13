@@ -1,7 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE_NAME } from "@/lib/constants";
 
-const PUBLIC_ROUTES = ["/login"];
+const PUBLIC_ROUTES = [
+  "/login",
+  "/manifest.webmanifest",
+  "/sw.js",
+  "/offline.html",
+  "/apple-touch-icon.png",
+];
+const PUBLIC_PATH_PREFIXES = ["/icons/"];
 
 /**
  * Checagem leve (só existência do cookie) compatível com o runtime Edge do
@@ -13,7 +20,8 @@ const PUBLIC_ROUTES = ["/login"];
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const hasSessionCookie = Boolean(request.cookies.get(SESSION_COOKIE_NAME)?.value);
-  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
+  const isPublicRoute =
+    PUBLIC_ROUTES.includes(pathname) || PUBLIC_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
   if (!hasSessionCookie && !isPublicRoute && pathname !== "/") {
     const loginUrl = new URL("/login", request.url);
