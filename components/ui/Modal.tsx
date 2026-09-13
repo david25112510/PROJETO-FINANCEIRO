@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { IconClose } from "@/components/ui/icons";
 
 type ModalProps = {
@@ -39,9 +40,9 @@ export function Modal({ open, onClose, title, children, footer, size = "md" }: M
     };
   }, [open, onClose]);
 
-  if (!open) return null;
+  if (!open || typeof document === "undefined") return null;
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-5">
       <button
         type="button"
@@ -77,6 +78,7 @@ export function Modal({ open, onClose, title, children, footer, size = "md" }: M
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
