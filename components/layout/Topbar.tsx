@@ -2,6 +2,7 @@
 
 import { IconMenu } from "@/components/ui/icons";
 import { UserMenu } from "@/components/layout/UserMenu";
+import { PwaInstallButton } from "@/components/pwa/PwaInstallButton";
 
 function mesAtual(): string {
   return new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric" }).format(new Date());
@@ -27,6 +28,8 @@ export function Topbar({ onOpenMenu }: { onOpenMenu: () => void }) {
       <div className="hidden rounded-full border border-success-500/20 bg-success-50 px-3 py-1 text-xs font-medium text-success-600 sm:block">
         Sessão segura
       </div>
+
+      <PwaInstallButton />
 
       <div>
         <UserMenu />

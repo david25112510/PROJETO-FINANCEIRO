@@ -80,6 +80,7 @@ export function DividaFormModal({ open, onClose, onSalvo }: Props) {
       open={open}
       onClose={onClose}
       title="Nova dívida"
+      size="lg"
       footer={
         <>
           <Button type="button" variant="secondary" onClick={onClose} disabled={salvando}>
@@ -114,7 +115,7 @@ export function DividaFormModal({ open, onClose, onSalvo }: Props) {
           disabled={salvando}
         />
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <FormField
             label="Valor original (R$)"
             type="number"
@@ -138,7 +139,7 @@ export function DividaFormModal({ open, onClose, onSalvo }: Props) {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <FormField
             label="Taxa de juros mensal (%)"
             type="number"
@@ -158,7 +159,7 @@ export function DividaFormModal({ open, onClose, onSalvo }: Props) {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <FormField
             label="Parcelas restantes (opcional)"
             type="number"

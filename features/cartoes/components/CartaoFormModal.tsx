@@ -76,6 +76,7 @@ export function CartaoFormModal({ open, onClose, cartaoEditando, onSalvo }: Prop
       open={open}
       onClose={onClose}
       title={editando ? "Editar cartão" : "Novo cartão"}
+      size="lg"
       footer={
         <>
           <Button type="button" variant="secondary" onClick={onClose} disabled={salvando}>
@@ -138,7 +139,7 @@ export function CartaoFormModal({ open, onClose, cartaoEditando, onSalvo }: Prop
           disabled={salvando}
         />
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <FormField
             label="Dia de fechamento"
             type="number"

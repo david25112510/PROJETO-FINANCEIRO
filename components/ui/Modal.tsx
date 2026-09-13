@@ -9,13 +9,21 @@ type ModalProps = {
   title: string;
   children: ReactNode;
   footer?: ReactNode;
+  size?: "sm" | "md" | "lg" | "xl";
+};
+
+const larguraPorTamanho = {
+  sm: "sm:max-w-md",
+  md: "sm:max-w-xl",
+  lg: "sm:max-w-2xl",
+  xl: "sm:max-w-4xl",
 };
 
 /**
  * Modal de ação rápida — componente obrigatório do design system.
  * Usado para criação/edição rápida de lançamentos.
  */
-export function Modal({ open, onClose, title, children, footer }: ModalProps) {
+export function Modal({ open, onClose, title, children, footer, size = "md" }: ModalProps) {
   useEffect(() => {
     if (!open) return;
 
@@ -34,7 +42,7 @@ export function Modal({ open, onClose, title, children, footer }: ModalProps) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-5">
       <button
         type="button"
         aria-label="Fechar modal"
@@ -45,9 +53,9 @@ export function Modal({ open, onClose, title, children, footer }: ModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-titulo"
-        className="relative flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-xl bg-white shadow-2xl"
+        className={`relative flex max-h-[calc(100dvh-0.75rem)] w-full flex-col overflow-hidden rounded-t-2xl bg-white shadow-2xl sm:max-h-[calc(100dvh-2.5rem)] sm:rounded-2xl ${larguraPorTamanho[size]}`}
       >
-        <div className="flex items-center justify-between border-b border-graphite-100 bg-panel px-5 py-4">
+        <div className="flex shrink-0 items-center justify-between border-b border-graphite-100 bg-panel px-4 py-3.5 sm:px-6 sm:py-4">
           <h2 id="modal-titulo" className="text-base font-semibold text-graphite-900">
             {title}
           </h2>
@@ -61,9 +69,13 @@ export function Modal({ open, onClose, title, children, footer }: ModalProps) {
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-5 py-4">{children}</div>
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 sm:py-5">{children}</div>
 
-        {footer && <div className="flex justify-end gap-2 border-t border-graphite-100 bg-panel px-5 py-4">{footer}</div>}
+        {footer && (
+          <div className="flex shrink-0 flex-wrap justify-end gap-2 border-t border-graphite-100 bg-panel px-4 py-3 sm:px-6 sm:py-4">
+            {footer}
+          </div>
+        )}
       </div>
     </div>
   );

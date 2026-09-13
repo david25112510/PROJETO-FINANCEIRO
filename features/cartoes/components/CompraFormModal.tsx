@@ -112,6 +112,7 @@ export function CompraFormModal({ open, onClose, cartaoId, onSalvo }: Props) {
       open={open}
       onClose={onClose}
       title="Nova compra"
+      size="lg"
       footer={
         <>
           <Button type="button" variant="secondary" onClick={onClose} disabled={salvando}>
@@ -138,7 +139,7 @@ export function CompraFormModal({ open, onClose, cartaoId, onSalvo }: Props) {
           disabled={salvando}
         />
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <FormField
             label="Valor (R$)"
             type="number"
@@ -168,7 +169,7 @@ export function CompraFormModal({ open, onClose, cartaoId, onSalvo }: Props) {
           ))}
         </Select>
 
-        <div className="flex items-end gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
           <FormField
             label="Nova categoria"
             value={novaCategoria}

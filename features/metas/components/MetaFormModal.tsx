@@ -87,6 +87,7 @@ export function MetaFormModal({ open, onClose, onSalvo }: Props) {
       open={open}
       onClose={onClose}
       title="Nova meta"
+      size="lg"
       footer={
         <>
           <Button type="button" variant="secondary" onClick={onClose} disabled={salvando}>
@@ -114,7 +115,7 @@ export function MetaFormModal({ open, onClose, onSalvo }: Props) {
           placeholder="Ex.: Reserva de emergência, Viagem..."
         />
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <FormField
             label="Valor alvo (R$)"
             type="number"

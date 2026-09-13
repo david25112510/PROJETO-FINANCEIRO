@@ -173,6 +173,7 @@ export function LancamentoFormModal({
       open={open}
       onClose={onClose}
       title={editando ? "Editar lançamento" : "Novo lançamento"}
+      size="lg"
       footer={
         <>
           <Button type="button" variant="secondary" onClick={onClose} disabled={salvando}>
@@ -199,7 +200,7 @@ export function LancamentoFormModal({
           disabled={salvando}
         />
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <FormField
             label="Valor (R$)"
             type="number"
@@ -245,7 +246,7 @@ export function LancamentoFormModal({
           </div>
         )}
 
-        <div className="flex items-end gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
           <FormField
             label="Nova categoria"
             value={novaCategoria}

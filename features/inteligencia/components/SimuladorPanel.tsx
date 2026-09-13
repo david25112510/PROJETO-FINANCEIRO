@@ -6,6 +6,7 @@ import { FormField } from "@/components/ui/FormField";
 import { DataTable, type Coluna } from "@/components/ui/DataTable";
 import { simular, type PontoProjecaoDto, type ResultadoSimulacaoDto } from "@/features/inteligencia/api";
 import { formatarMoeda } from "@/lib/format";
+import { ProjectionChart } from "@/features/inteligencia/components/ProjectionChart";
 
 const colunasProjecao: Coluna<PontoProjecaoDto>[] = [
   { chave: "mes", cabecalho: "Mês", renderizar: (p) => `Mês ${p.mes}` },
@@ -55,12 +56,16 @@ export function SimuladorPanel() {
   }
 
   return (
-    <div className="flex flex-col gap-6 rounded-xl border border-graphite-200 bg-surface p-5 shadow-sm">
-      <div>
-        <h2 className="text-sm font-semibold text-graphite-700">Simulador &ldquo;e se&rdquo;</h2>
-        <p className="mt-1 text-xs text-graphite-400">
+    <section className="flex flex-col gap-6 rounded-2xl border border-graphite-200 bg-surface p-4 shadow-sm sm:p-6">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+        <p className="text-xs font-medium uppercase tracking-wide text-aqua-600">Planejamento</p>
+        <h2 className="mt-1 text-xl font-semibold text-graphite-900">Simulador &ldquo;e se&rdquo;</h2>
+        <p className="mt-1 max-w-2xl text-sm leading-6 text-graphite-500">
           A base é a média das suas receitas e despesas dos últimos 3 meses. Ajuste os cenários abaixo.
         </p>
+        </div>
+        <span className="rounded-full bg-graphite-50 px-3 py-1 text-xs font-medium text-graphite-500">Projeção de 1 a 24 meses</span>
       </div>
 
       {erro && (
@@ -69,7 +74,7 @@ export function SimuladorPanel() {
         </p>
       )}
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 rounded-2xl bg-graphite-50 p-4 sm:grid-cols-2 sm:p-5 lg:grid-cols-3">
         <div>
           <div className="mb-1 flex items-center justify-between text-sm">
             <label htmlFor="sim-receitas" className="font-medium text-graphite-700">
@@ -136,8 +141,8 @@ export function SimuladorPanel() {
         />
       </div>
 
-      <Button type="button" onClick={handleSimular} loading={simulando} className="self-start">
-        Simular
+      <Button type="button" onClick={handleSimular} loading={simulando} className="w-full sm:w-auto sm:self-start">
+        Gerar projeção
       </Button>
 
       {resultado && (
@@ -166,18 +171,15 @@ export function SimuladorPanel() {
               </p>
             </div>
           </div>
-
-          <DataTable
-            colunas={colunasProjecao}
-            linhas={resultado.projecao}
-            chaveLinha={(p) => String(p.mes)}
-            estado="sucesso"
-            pagina={1}
-            totalPaginas={1}
-            onMudarPagina={() => {}}
-          />
+          <ProjectionChart pontos={resultado.projecao} />
+          <details className="group rounded-xl border border-graphite-200 bg-white">
+            <summary className="cursor-pointer list-none px-4 py-3 text-sm font-semibold text-graphite-700 marker:hidden">Ver valores mês a mês <span className="float-right text-graphite-400 transition-transform group-open:rotate-180">⌄</span></summary>
+            <div className="border-t border-graphite-100 p-3">
+              <DataTable colunas={colunasProjecao} linhas={resultado.projecao} chaveLinha={(p) => String(p.mes)} estado="sucesso" pagina={1} totalPaginas={1} onMudarPagina={() => {}} />
+            </div>
+          </details>
         </div>
       )}
-    </div>
+    </section>
   );
 }
