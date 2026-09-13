@@ -16,9 +16,10 @@ export function IntelligenceSummary({ score, insights }: { score: ScoreSaudeDto;
   ];
 
   return (
-    <div className="grid gap-px overflow-hidden rounded-2xl border border-graphite-200 bg-graphite-100 shadow-sm sm:grid-cols-2 xl:grid-cols-4">
-      {itens.map((item) => (
-        <div key={item.rotulo} className="bg-white p-4 sm:p-5">
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {itens.map((item, indice) => (
+        <div key={item.rotulo} className="depth-card relative overflow-hidden rounded-2xl border border-white/80 bg-white/90 p-4 backdrop-blur sm:p-5">
+          <span className="absolute right-4 top-4 text-3xl font-light text-aqua-500/15">0{indice + 1}</span>
           <p className="text-xs font-medium uppercase tracking-wide text-graphite-400">{item.rotulo}</p>
           <p className="mt-2 text-lg font-semibold text-graphite-900">{item.valor}</p>
           <p className="mt-1 text-xs leading-5 text-graphite-500">{item.detalhe}</p>

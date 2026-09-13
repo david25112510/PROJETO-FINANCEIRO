@@ -10,7 +10,7 @@ function mesAtual(): string {
 
 export function Topbar({ onOpenMenu }: { onOpenMenu: () => void }) {
   return (
-    <header className="flex h-20 shrink-0 items-center gap-3 border-b border-graphite-200/70 bg-white/85 px-4 backdrop-blur sm:px-6 lg:px-8">
+    <header className="relative z-20 flex h-20 shrink-0 items-center gap-3 border-b border-white/70 bg-white/75 px-4 shadow-[0_12px_35px_-30px_rgba(11,21,38,.8)] backdrop-blur-xl sm:px-6 lg:px-8">
       <button
         type="button"
         onClick={onOpenMenu}

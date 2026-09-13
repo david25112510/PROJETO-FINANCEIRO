@@ -25,14 +25,17 @@ export function DashboardHero({ user }: { user: SafeUser }) {
   const primeiroNome = user.name.split(" ")[0];
 
   return (
-    <section className="overflow-hidden rounded-xl border border-graphite-200 bg-ink text-white shadow-sm">
-      <div className="grid gap-6 p-5 sm:p-6 lg:grid-cols-[1fr_420px] lg:p-7">
+    <section className="tech-noise relative overflow-hidden rounded-3xl border border-white/10 bg-[linear-gradient(135deg,#07101d_0%,#101d3a_52%,#16294f_100%)] text-white shadow-[0_32px_75px_-38px_rgba(7,16,29,.9)]">
+      <div className="pointer-events-none absolute -right-16 -top-28 size-80 rounded-full border border-aqua-500/20 bg-aqua-500/10 shadow-[0_0_80px_rgba(21,154,156,.22)]" />
+      <div className="pointer-events-none absolute right-28 top-10 size-28 rotate-45 rounded-[2rem] border border-white/10 bg-white/[0.025]" />
+      <div className="relative grid gap-7 p-5 sm:p-7 lg:grid-cols-[1fr_420px] lg:p-8">
         <div className="flex min-w-0 flex-col justify-between gap-6">
           <div>
-            <p className="text-sm font-medium text-aqua-500">
+            <p className="inline-flex items-center gap-2 rounded-full border border-aqua-500/20 bg-aqua-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-aqua-500">
+              <span className="size-1.5 rounded-full bg-aqua-500 shadow-[0_0_10px_#159a9c]" />
               {saudacao()}, {primeiroNome}
             </p>
-            <h1 className="mt-2 max-w-2xl text-2xl font-semibold tracking-normal text-white sm:text-3xl">
+            <h1 className="mt-4 max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
               Seu painel financeiro de {mesAtual()}
             </h1>
             <p className="mt-3 max-w-xl text-sm leading-6 text-graphite-300">
@@ -43,30 +46,30 @@ export function DashboardHero({ user }: { user: SafeUser }) {
           <div className="flex flex-wrap gap-2">
             <Link
               href="/receitas"
-              className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-aqua-500 px-4 py-2 text-sm font-medium text-white hover:bg-aqua-600"
+              className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-gradient-to-r from-aqua-500 to-aqua-600 px-5 py-2 text-sm font-semibold text-white shadow-[0_12px_28px_-12px_rgba(21,154,156,.8)] transition-transform hover:-translate-y-0.5"
             >
               <IconPlus className="size-4" />
               Lançar agora
             </Link>
             <Link
               href="/cartoes"
-              className="inline-flex min-h-10 items-center rounded-lg border border-white/15 px-4 py-2 text-sm font-medium text-white hover:bg-white/10"
+              className="inline-flex min-h-11 items-center rounded-xl border border-white/15 bg-white/[0.04] px-5 py-2 text-sm font-medium text-white backdrop-blur hover:bg-white/10"
             >
               Ver cartões
             </Link>
           </div>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+        <div className="grid gap-3 [perspective:900px] sm:grid-cols-3 lg:grid-cols-1">
           {atalhos.map((atalho) => {
             const Icon = atalho.icon;
             return (
               <Link
                 key={atalho.href}
                 href={atalho.href}
-                className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3 hover:bg-white/10"
+                className="depth-card group flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.07] p-3.5 backdrop-blur transition-transform hover:translate-x-1 hover:bg-white/10"
               >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/10 text-aqua-500">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-aqua-500/20 bg-aqua-500/10 text-aqua-500 shadow-[0_10px_22px_-14px_rgba(21,154,156,.8)] transition-transform group-hover:rotate-3 group-hover:scale-105">
                   <Icon className="size-5" />
                 </span>
                 <span className="min-w-0">

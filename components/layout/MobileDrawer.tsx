@@ -24,13 +24,13 @@ export function MobileDrawer({ open, onClose }: { open: boolean; onClose: () => 
         type="button"
         aria-label="Fechar menu"
         onClick={onClose}
-        className="absolute inset-0 bg-graphite-900/50"
+        className="absolute inset-0 bg-graphite-900/60 backdrop-blur-sm"
       />
       <div
         role="dialog"
         aria-modal="true"
         aria-label="Menu de navegação"
-        className="absolute inset-y-0 left-0 flex w-72 flex-col bg-navy-900 shadow-xl"
+        className="absolute inset-y-0 left-0 flex w-72 flex-col border-r border-aqua-500/20 bg-[linear-gradient(165deg,#07101d,#101d3a)] shadow-[24px_0_65px_-25px_rgba(0,0,0,.9)]"
       >
         <div className="flex h-16 items-center justify-between px-5">
           <span className="text-base font-semibold text-white">FinanceOps</span>

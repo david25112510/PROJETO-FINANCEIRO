@@ -42,12 +42,25 @@ export function InteligenciaPage() {
 
   return (
     <div className="flex flex-col gap-6 pb-6">
-      <section className="relative overflow-hidden rounded-2xl border border-navy-700 bg-ink px-5 py-6 text-white shadow-sm sm:px-7 sm:py-8">
-        <div className="absolute -right-20 -top-24 size-64 rounded-full bg-aqua-500/15 blur-3xl" />
-        <div className="relative max-w-3xl">
+      <section className="tech-noise relative overflow-hidden rounded-3xl border border-white/10 bg-[linear-gradient(135deg,#06101d_0%,#101d3a_55%,#192d59_100%)] px-5 py-7 text-white shadow-[0_34px_80px_-40px_rgba(7,16,29,.95)] sm:px-8 sm:py-9">
+        <div className="absolute -right-20 -top-24 size-72 rounded-full bg-aqua-500/20 blur-3xl" />
+        <div className="relative grid items-center gap-8 lg:grid-cols-[1fr_300px]">
+          <div className="max-w-3xl">
           <span className="inline-flex rounded-full border border-aqua-500/30 bg-aqua-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-aqua-500">Análise inteligente</span>
-          <h1 className="mt-4 text-2xl font-semibold tracking-tight sm:text-3xl">Entenda sua situação e teste o próximo passo</h1>
+          <h1 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Entenda sua situação e teste o próximo passo</h1>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-graphite-300">O diagnóstico combina poupança, crédito, dívidas e metas. As projeções usam a média real dos últimos três meses.</p>
+          <div className="mt-5 flex flex-wrap gap-2 text-xs text-navy-100">
+            {['Fluxo de caixa', 'Crédito', 'Dívidas', 'Metas'].map((item) => <span key={item} className="rounded-lg border border-white/10 bg-white/[0.05] px-3 py-1.5 backdrop-blur">{item}</span>)}
+          </div>
+          </div>
+          <div className="float-soft relative mx-auto hidden size-56 [perspective:800px] lg:block" aria-hidden="true">
+            <div className="absolute inset-2 rounded-full border border-aqua-500/30 shadow-[0_0_55px_rgba(21,154,156,.22)] [transform:rotateX(68deg)_rotateZ(-12deg)]" />
+            <div className="absolute inset-8 rounded-full border-2 border-violet-400/30 [transform:rotateX(58deg)_rotateZ(42deg)]" />
+            <div className="absolute inset-14 rounded-full border border-white/25 [transform:rotateY(64deg)_rotateZ(24deg)]" />
+            <div className="absolute inset-[4.5rem] rounded-3xl border border-aqua-300/50 bg-gradient-to-br from-aqua-500/70 to-violet-500/50 shadow-[0_0_45px_rgba(21,154,156,.65)] [transform:rotateX(18deg)_rotateY(-24deg)_rotateZ(45deg)]" />
+            <div className="absolute left-5 top-20 size-2 rounded-full bg-aqua-300 shadow-[0_0_14px_#66ffff]" />
+            <div className="absolute bottom-12 right-7 size-2 rounded-full bg-violet-300 shadow-[0_0_14px_#a78bfa]" />
+          </div>
         </div>
       </section>
 
@@ -71,7 +84,7 @@ export function InteligenciaPage() {
           <IntelligenceSummary score={score} insights={insights} />
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,.65fr)]">
             <ScoreSaudeCard score={score} />
-            <section className="rounded-2xl border border-graphite-200 bg-white p-5 shadow-sm sm:p-6">
+            <section className="depth-card rounded-3xl border border-white/80 bg-white/90 p-5 backdrop-blur sm:p-6">
               <div className="mb-4 flex items-center justify-between gap-3">
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wide text-graphite-400">Monitoramento</p>

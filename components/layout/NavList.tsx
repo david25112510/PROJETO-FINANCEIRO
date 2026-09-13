@@ -39,8 +39,8 @@ export function NavList({ onNavigate }: { onNavigate?: () => void }) {
             aria-current={isActive ? "page" : undefined}
             className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
               isActive
-                ? "bg-white text-ink shadow-sm"
-                : "text-graphite-200 hover:bg-white/10 hover:text-white"
+                ? "border border-aqua-500/20 bg-[linear-gradient(110deg,rgba(21,154,156,.24),rgba(255,255,255,.10))] text-white shadow-[0_10px_24px_-16px_rgba(21,154,156,.9),inset_0_1px_0_rgba(255,255,255,.16)]"
+                : "border border-transparent text-graphite-200 hover:bg-white/10 hover:text-white"
             }`}
           >
             <Icon className="h-5 w-5 shrink-0" />

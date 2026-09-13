@@ -56,7 +56,7 @@ export function SimuladorPanel() {
   }
 
   return (
-    <section className="flex flex-col gap-6 rounded-2xl border border-graphite-200 bg-surface p-4 shadow-sm sm:p-6">
+    <section className="depth-card flex flex-col gap-6 rounded-3xl border border-white/80 bg-white/90 p-4 backdrop-blur sm:p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
         <p className="text-xs font-medium uppercase tracking-wide text-aqua-600">Planejamento</p>
@@ -74,7 +74,7 @@ export function SimuladorPanel() {
         </p>
       )}
 
-      <div className="grid grid-cols-1 gap-5 rounded-2xl bg-graphite-50 p-4 sm:grid-cols-2 sm:p-5 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 rounded-2xl border border-navy-100/60 bg-[linear-gradient(145deg,#f7fafc,#eef5f8)] p-4 shadow-inner sm:grid-cols-2 sm:p-5 lg:grid-cols-3">
         <div>
           <div className="mb-1 flex items-center justify-between text-sm">
             <label htmlFor="sim-receitas" className="font-medium text-graphite-700">

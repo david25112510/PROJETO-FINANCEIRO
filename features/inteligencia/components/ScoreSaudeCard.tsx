@@ -17,13 +17,13 @@ const COR_NIVEL: Record<NivelSaude, string> = {
 
 export function ScoreSaudeCard({ score }: { score: ScoreSaudeDto }) {
   return (
-    <section className="overflow-hidden rounded-2xl border border-graphite-200 bg-surface shadow-sm">
-      <div className="grid bg-gradient-to-br from-ink via-navy-900 to-navy-700 p-5 text-white sm:grid-cols-[180px_1fr] sm:items-center sm:gap-6 sm:p-6">
+    <section className="depth-card overflow-hidden rounded-3xl border border-white/80 bg-surface">
+      <div className="tech-noise grid bg-gradient-to-br from-ink via-navy-900 to-navy-700 p-5 text-white sm:grid-cols-[180px_1fr] sm:items-center sm:gap-6 sm:p-6">
         <div className="flex flex-col items-center sm:items-start">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-aqua-500">Saúde financeira</p>
           <div
-            className="relative mt-4 flex size-36 items-center justify-center rounded-full"
-            style={{ background: `conic-gradient(#22b6b8 ${score.score * 3.6}deg, rgba(255,255,255,.12) 0deg)` }}
+            className="relative mt-4 flex size-36 items-center justify-center rounded-full shadow-[0_0_38px_rgba(21,154,156,.28)]"
+            style={{ background: `conic-gradient(#34d7d9 ${score.score * 3.6}deg, rgba(255,255,255,.10) 0deg)` }}
           >
             <div className="flex size-28 flex-col items-center justify-center rounded-full bg-navy-900 shadow-inner">
               <span className="numero-destaque text-4xl font-semibold">{score.score}</span>
@@ -39,7 +39,7 @@ export function ScoreSaudeCard({ score }: { score: ScoreSaudeDto }) {
         {score.componentes.map((componente) => {
           const percentual = Math.round((componente.pontuacao / componente.pontuacaoMaxima) * 100);
           return (
-            <div key={componente.chave} className="bg-white p-4 sm:p-5">
+            <div key={componente.chave} className="bg-[linear-gradient(145deg,#fff,#f7fafc)] p-4 sm:p-5">
               <div className="flex items-center justify-between gap-3">
                 <p className="text-sm font-semibold text-graphite-800">{componente.nome}</p>
                 <span className="numero-destaque text-xs font-semibold text-navy-600">{componente.pontuacao}/{componente.pontuacaoMaxima}</span>

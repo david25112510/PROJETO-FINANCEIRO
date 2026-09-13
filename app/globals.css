@@ -96,10 +96,82 @@
 
 body {
   background:
-    radial-gradient(circle at top left, rgba(21, 154, 156, 0.08), transparent 34rem),
-    linear-gradient(180deg, #f8fafc 0%, var(--color-background) 45%);
+    radial-gradient(circle at 12% -10%, rgba(21, 154, 156, 0.18), transparent 34rem),
+    radial-gradient(circle at 92% 8%, rgba(91, 82, 210, 0.12), transparent 30rem),
+    linear-gradient(180deg, #f8fbff 0%, #edf2f8 100%);
   color: var(--color-foreground);
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+}
+
+.tech-canvas {
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(rgba(22, 41, 79, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(22, 41, 79, 0.035) 1px, transparent 1px),
+    radial-gradient(circle at 18% 0%, rgba(32, 190, 193, 0.12), transparent 28rem),
+    radial-gradient(circle at 85% 18%, rgba(105, 90, 214, 0.1), transparent 30rem),
+    linear-gradient(145deg, #f8fbff 0%, #eef3f9 55%, #f7f9fc 100%);
+  background-size: 32px 32px, 32px 32px, auto, auto, auto;
+}
+
+.tech-canvas::before {
+  position: fixed;
+  inset: 80px 0 auto auto;
+  z-index: -1;
+  width: 28rem;
+  height: 28rem;
+  border-radius: 999px;
+  background: rgba(21, 154, 156, 0.08);
+  filter: blur(90px);
+  content: "";
+  pointer-events: none;
+}
+
+.depth-card {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 20px 45px -30px rgba(11, 21, 38, 0.5),
+    0 8px 18px -14px rgba(11, 21, 38, 0.2);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+@media (hover: hover) {
+  .depth-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(21, 154, 156, 0.35);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.95) inset,
+      0 28px 55px -32px rgba(11, 21, 38, 0.55),
+      0 10px 24px -16px rgba(21, 154, 156, 0.35);
+  }
+}
+
+.tech-noise {
+  position: relative;
+}
+
+.tech-noise::after {
+  position: absolute;
+  inset: 0;
+  opacity: 0.16;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.2'/%3E%3C/svg%3E");
+  content: "";
+  pointer-events: none;
+}
+
+.float-soft {
+  animation: float-soft 5s ease-in-out infinite;
+}
+
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0) rotateX(0deg); }
+  50% { transform: translateY(-6px) rotateX(2deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float-soft { animation: none; }
+  .depth-card { transition: none; }
 }
 
 /* Números em destaque — usados nos cards de indicador */

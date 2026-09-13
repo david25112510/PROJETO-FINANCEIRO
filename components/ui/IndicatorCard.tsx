@@ -41,8 +41,9 @@ export function IndicatorCard({
 }: IndicatorCardProps) {
   return (
     <div
-      className={`relative flex min-h-32 flex-col gap-2 overflow-hidden rounded-lg border border-graphite-200 bg-surface p-5 shadow-sm before:absolute before:left-0 before:top-0 before:h-full before:w-1 ${bordaPorTom[tom]}`}
+      className={`depth-card relative flex min-h-36 flex-col gap-2 overflow-hidden rounded-2xl border border-white/80 bg-[linear-gradient(145deg,rgba(255,255,255,.96),rgba(247,250,253,.9))] p-5 before:absolute before:left-0 before:top-0 before:h-full before:w-1 ${bordaPorTom[tom]}`}
     >
+      <span className="pointer-events-none absolute -right-8 -top-10 size-24 rounded-full bg-aqua-500/[0.06] blur-xl" />
       <span className="text-sm font-medium text-graphite-500">{titulo}</span>
 
       {estado === "carregando" && (

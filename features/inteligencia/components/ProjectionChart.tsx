@@ -24,7 +24,7 @@ export function ProjectionChart({ pontos }: { pontos: PontoProjecaoDto[] }) {
   const indicesRotulo = new Set([0, pontos.length - 1, ...pontos.map((_, i) => i).filter((i) => pontos.length <= 8 || i % Math.ceil(pontos.length / 6) === 0)]);
 
   return (
-    <div className="rounded-2xl border border-graphite-200 bg-white p-4 sm:p-5">
+    <div className="depth-card rounded-2xl border border-white/80 bg-[linear-gradient(145deg,#fff,#f5fafb)] p-4 sm:p-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="text-xs font-medium uppercase tracking-wide text-graphite-400">Projeção acumulada</p>
