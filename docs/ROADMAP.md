@@ -57,7 +57,8 @@ WhatsApp expõem a experiência planejada, porém não têm provedores reais.
    usuários e categorias continua pendente.
 2. Melhorar estados vazios com ações claras e onboarding inicial.
 3. Adicionar filtros globais de período e contas ao dashboard.
-4. Incluir recuperação de senha e fluxo administrativo de convite.
+4. Recuperação de senha por e-mail implementada via Resend; fluxo administrativo
+   de convite continua pendente.
 5. Conectar um provedor real de Open Finance após definir consentimento, retenção
    e exclusão de dados.
 6. Conectar Meta Cloud API ou Twilio ao módulo de WhatsApp.

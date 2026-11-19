@@ -6,7 +6,7 @@ indicadores de saúde financeira.
 
 ## Recursos atuais
 
-- cadastro público de contas e autenticação com sessões, bloqueio por tentativas e 2FA por TOTP;
+- cadastro público de contas, recuperação de senha por e-mail e autenticação com sessões, bloqueio por tentativas e 2FA por TOTP;
 - receitas e despesas simples, recorrentes ou parceladas;
 - cartões, compras parceladas, ciclos de fatura e pagamentos;
 - dívidas, simulação de quitação e financiamentos Price/SAC;

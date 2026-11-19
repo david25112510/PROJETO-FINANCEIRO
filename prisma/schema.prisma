@@ -44,6 +44,7 @@ model User {
   codigosBackup String[] @default([])
 
   sessions                 Session[]
+  passwordResetTokens     PasswordResetToken[]
   layoutPreferences        LayoutPreference[]
   auditLogs                AuditLog[]
   categorias               Categoria[]
@@ -92,6 +93,20 @@ model Session {
 
   @@index([userId])
   @@map("sessions")
+}
+
+/// Token de uso único para redefinição de senha. Apenas o hash do token é persistido.
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("password_reset_tokens")
 }
 
 /// Preferências de layout do dashboard (posição/tamanho de widgets), por usuário.

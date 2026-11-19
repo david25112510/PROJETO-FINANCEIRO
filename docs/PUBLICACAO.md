@@ -31,15 +31,18 @@ produção:
 - `DATABASE_URL`;
 - `DIRECT_URL`;
 - `SESSION_SECRET`, com pelo menos 32 caracteres aleatórios;
+- `APP_BASE_URL=https://projeto-financeiro-amber.vercel.app`;
+- `RESEND_API_KEY`, chave da API do Resend;
+- `EMAIL_FROM`, remetente em um domínio verificado no Resend;
 - `LOG_LEVEL=info`.
 
-Marque `DATABASE_URL`, `DIRECT_URL` e `SESSION_SECRET` como variáveis sensíveis.
+Marque `DATABASE_URL`, `DIRECT_URL`, `SESSION_SECRET` e `RESEND_API_KEY` como variáveis sensíveis.
 Não configure `NODE_ENV`: a Vercel define essa variável para o ambiente de
 produção. A branch de produção do projeto deve ser `master`.
 
 As variáveis `SEED_ADMIN_NAME`, `SEED_ADMIN_EMAIL` e `SEED_ADMIN_PASSWORD` são
-necessárias somente enquanto o primeiro usuário é criado. Depois, podem ser
-removidas da Vercel.
+necessárias somente se o usuário inicial for criado pelo seed. Depois, podem
+ser removidas da Vercel.
 
 ## 3. Primeiro acesso
 
@@ -74,6 +77,17 @@ Depois da publicação, confirme:
 
 O cadastro não confirma a posse do e-mail. Não crie uma conta de teste em
 produção sem um endereço controlado e uma decisão de removê-la depois.
+
+### Recuperação de senha
+
+O link **Esqueci minha senha** aparece na tela `/login`. Para enviar os links,
+configure `RESEND_API_KEY` e `EMAIL_FROM` na Vercel, e verifique o domínio do
+remetente no Resend. `APP_BASE_URL` define o domínio incluído no e-mail.
+Solicitações sempre mostram uma resposta genérica para não revelar se um e-mail
+tem conta. O token é armazenado somente como hash, expira em 30 minutos e só
+pode ser usado uma vez. Ao redefinir a senha, as sessões anteriores são
+revogadas. Sem as variáveis do Resend, a solicitação informa que a recuperação
+ainda não está configurada e nenhum e-mail é enviado.
 
 O manifest, o service worker, a página offline e os ícones precisam permanecer
 públicos para que a instalação PWA funcione antes e depois do login. O service

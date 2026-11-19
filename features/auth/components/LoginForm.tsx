@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { FormField } from "@/components/ui/FormField";
 import { Button } from "@/components/ui/Button";
 import type { ApiResponse } from "@/lib/api-response";
@@ -14,6 +15,7 @@ export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirecionarPara = normalizarDestinoInterno(searchParams.get("redirecionarPara"));
+  const senhaRedefinida = searchParams.get("senhaRedefinida") === "1";
 
   const [etapa, setEtapa] = useState<"credenciais" | "totp">("credenciais");
   const [email, setEmail] = useState("");
@@ -141,6 +143,11 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmitCredenciais} noValidate className="flex flex-col gap-4">
+      {senhaRedefinida && (
+        <p role="status" className="rounded-lg bg-success-50 px-3.5 py-2.5 text-sm text-success-600">
+          Senha redefinida. Entre com a nova senha.
+        </p>
+      )}
       {formError && (
         <p role="alert" className="rounded-lg bg-danger-50 px-3.5 py-2.5 text-sm text-danger-600">
           {formError}
@@ -166,6 +173,12 @@ export function LoginForm() {
         error={fieldErrors.password}
         disabled={loading}
       />
+
+      <div className="-mt-2 text-right">
+        <Link href="/recuperar-senha" className="text-sm font-medium text-navy-600 hover:underline">
+          Esqueci minha senha
+        </Link>
+      </div>
 
       <Button type="submit" loading={loading} className="mt-2 w-full">
         {loading ? "Entrando..." : "Entrar"}

@@ -4,6 +4,8 @@ import { SESSION_COOKIE_NAME } from "@/lib/constants";
 const PUBLIC_ROUTES = [
   "/login",
   "/criar-conta",
+  "/recuperar-senha",
+  "/recuperar-senha/redefinir",
   "/manifest.webmanifest",
   "/sw.js",
   "/offline.html",
