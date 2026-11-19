@@ -1,8 +1,9 @@
 # Publicação para uso pessoal
 
 O FinanceOps foi preparado para ser publicado na Vercel com PostgreSQL no
-Neon. O cadastro público não existe: somente o usuário criado pelo comando de
-seed consegue entrar.
+Neon. O cadastro público está disponível em `/criar-conta`; qualquer pessoa
+pode criar uma conta com nome, e-mail e senha forte. O cadastro não exige
+confirmação de e-mail. Cada usuário acessa os próprios dados financeiros.
 
 ## Ambiente de produção
 
@@ -51,7 +52,10 @@ npm run db:seed
 ```
 
 O seed não possui senha padrão e recusa senhas com menos de 12 caracteres. Se
-o e-mail já existir, ele não altera a conta nem a senha.
+o e-mail já existir, ele não altera a conta nem a senha. O seed é opcional: uma
+conta também pode ser criada pela página pública `/criar-conta`, que exige pelo
+menos 8 caracteres, uma letra maiúscula, uma minúscula e um número. O cadastro
+cria a sessão automaticamente e limita tentativas por endereço IP.
 
 ## 4. Publicação
 
@@ -63,9 +67,13 @@ Depois da publicação, confirme:
 
 1. `/api/health` responde com `status: ok`;
 2. `/login` abre sem erros;
-3. o usuário inicial consegue entrar;
-4. uma receita de teste pode ser criada e excluída;
-5. a autenticação em dois fatores está ativada na página de segurança.
+3. `/criar-conta` abre sem exigir uma sessão;
+4. uma conta criada pelo próprio usuário consegue entrar e acessar o dashboard;
+5. uma receita de teste pode ser criada e excluída;
+6. a autenticação em dois fatores pode ser ativada na página de segurança.
+
+O cadastro não confirma a posse do e-mail. Não crie uma conta de teste em
+produção sem um endereço controlado e uma decisão de removê-la depois.
 
 O manifest, o service worker, a página offline e os ícones precisam permanecer
 públicos para que a instalação PWA funcione antes e depois do login. O service

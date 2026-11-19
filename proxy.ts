@@ -3,6 +3,7 @@ import { SESSION_COOKIE_NAME } from "@/lib/constants";
 
 const PUBLIC_ROUTES = [
   "/login",
+  "/criar-conta",
   "/manifest.webmanifest",
   "/sw.js",
   "/offline.html",

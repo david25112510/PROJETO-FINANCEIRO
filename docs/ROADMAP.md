@@ -53,7 +53,8 @@ WhatsApp expõem a experiência planejada, porém não têm provedores reais.
 
 ## Prioridade 3 — completar a experiência
 
-1. Criar gestão de perfil, usuários e categorias.
+1. Cadastro público de contas implementado em `/criar-conta`; gestão de perfil,
+   usuários e categorias continua pendente.
 2. Melhorar estados vazios com ações claras e onboarding inicial.
 3. Adicionar filtros globais de período e contas ao dashboard.
 4. Incluir recuperação de senha e fluxo administrativo de convite.

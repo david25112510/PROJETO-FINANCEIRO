@@ -6,7 +6,7 @@ indicadores de saúde financeira.
 
 ## Recursos atuais
 
-- autenticação com sessões, bloqueio por tentativas e 2FA por TOTP;
+- cadastro público de contas e autenticação com sessões, bloqueio por tentativas e 2FA por TOTP;
 - receitas e despesas simples, recorrentes ou parceladas;
 - cartões, compras parceladas, ciclos de fatura e pagamentos;
 - dívidas, simulação de quitação e financiamentos Price/SAC;
@@ -25,7 +25,7 @@ Next.js 16, React 19, TypeScript, PostgreSQL, Prisma, Tailwind CSS e Zod.
 1. Copie `.env.example` para `.env` e ajuste os valores.
 2. Instale as dependências com `npm install`.
 3. Aplique as migrações com `npm run db:deploy`.
-4. Defina as variáveis `SEED_ADMIN_*` e crie o usuário inicial com `npm run db:seed`.
+4. Opcionalmente, defina as variáveis `SEED_ADMIN_*` e crie um usuário inicial com `npm run db:seed`; também é possível criar uma conta pela tela `/criar-conta`.
 5. Inicie o projeto com `npm run dev` e acesse `http://localhost:3000`.
 
 Não use as credenciais de exemplo em ambientes publicados.

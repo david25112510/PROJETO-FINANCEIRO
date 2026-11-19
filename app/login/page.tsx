@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { LoginForm } from "@/features/auth/components/LoginForm";
 import { getCurrentUser } from "@/lib/session";
 
@@ -64,6 +65,9 @@ export default async function LoginPage() {
             <Suspense fallback={null}>
               <LoginForm />
             </Suspense>
+            <p className="mt-6 text-center text-sm text-graphite-500">
+              Ainda não tem uma conta? <Link href="/criar-conta" className="font-medium text-navy-600 hover:underline">Criar conta</Link>
+            </p>
           </div>
         </div>
       </main>
